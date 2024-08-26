@@ -1,23 +1,29 @@
 import 'package:flutter/cupertino.dart';
+import './featurecollection.dart';
 
-class FeatureList extends StatefulWidget {
-const FeatureList({super.key});
-
-  @override
-  State<FeatureList> createState() => _FeatureListState();
-}
-
-class _FeatureListState extends State<FeatureList> {
-  bool isLoading = false;
+class FeatureList extends StatelessWidget {
+const FeatureList({super.key, required this.featureCollection});
+  final FeatureCollection? featureCollection;
+  List<Text> getFeaturePlaces() {
+    List<Text> ret = [];
+    for (Feature f in featureCollection?.features ?? []) {
+      ret.add(Text(f.properties.place));
+    }
+    return ret;
+  }
 @override
    Widget build(BuildContext context) {
     return  (
-      isLoading ? const Column(mainAxisAlignment:MainAxisAlignment.center,
-      children:[CupertinoActivityIndicator(animating: true)] )
-      :
-      CupertinoListSection(
-        children: const <Text> [Text('Foo'), Text('Bar')],
+      Container(margin:EdgeInsets.all(16.0), decoration:BoxDecoration(borderRadius: BorderRadius.circular(24.0),
+      color: CupertinoColors.darkBackgroundGray),
+      
+        child:
+      ListView.builder(padding:const EdgeInsets.all(16.0),itemCount:featureCollection?.features.length, itemBuilder: (BuildContext context, int index) {
+        return  Container(height:44, child:Text(featureCollection?.features[index].properties.place ?? ""));
+      }
+    
       )
+    )
     );
 
     }
