@@ -7,6 +7,8 @@ import './bottombar.dart';
 import 'package:http/http.dart' as http;
 import './featurecollection.dart';
 import './colors.dart';
+import 'package:geolocator/geolocator.dart';
+
 void main() {
   runApp(const MainApp());
 }
@@ -19,19 +21,53 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+
   late Future<FeatureCollection> featureCollection;
+  Position? position;
 
   @override void initState() {
     super.initState();
+   // position = determinePosition();
     featureCollection = fetchFeatures();
   }
+  Future<Position> determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    
+    if(!serviceEnabled) {
+      return Future.error('Location services are disabled');
+    }
 
+    permission = await Geolocator.checkPermission();
+    if(permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permission denied');
+      }
+    }
+    if (permission  == LocationPermission.deniedForever) {
+        return Future.error('Location permission permanantly denied');
+    }
+    return await Geolocator.getCurrentPosition();
+    
+     
+
+  }
   Future<FeatureCollection> fetchFeatures() async {
     final end = DateTime.now();
     final start = end.subtract(Duration(hours:24));
     final endString = end.toIso8601String();
     final startString = start.toIso8601String();
-    final response = await http.get(Uri.parse('https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=$startString&endtime=$endString'));
+    position = await determinePosition();
+    final latitude = position?.latitude;
+    final longitude= position?.longitude;
+    
+    if(latitude == null || longitude == null) {
+      throw Exception('No location available');
+    }
+
+    final response = await http.get(Uri.parse('https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=$startString&endtime=$endString&latitude=$latitude&longitude=$longitude&maxradiuskm=80'));
     if (response.statusCode == 200) {
       return FeatureCollection.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
     } else {
