@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import './featurecollection.dart';
+import './featuredetail.dart';
 
 class FeatureList extends StatelessWidget {
 const FeatureList({super.key, required this.featureCollection});
@@ -19,7 +20,12 @@ const FeatureList({super.key, required this.featureCollection});
       
         child:
       ListView.builder(padding:const EdgeInsets.all(16.0),itemCount:featureCollection?.features.length, itemBuilder: (BuildContext context, int index) {
-        return  Container(height:44, child:Text(featureCollection?.features[index].properties.place ?? ""));
+        return  GestureDetector(onTap: () {
+          print(featureCollection?.features[index].properties.place);
+          Navigator.push(context, CupertinoModalPopupRoute(builder: (context) => FeatureDetail(feature:featureCollection?.features[index]))
+          );
+      
+        }, child:Container(height:44, child:Text(featureCollection?.features[index].properties.place ?? "")));
       }
     
       )
