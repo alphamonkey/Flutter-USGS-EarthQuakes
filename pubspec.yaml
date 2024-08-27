@@ -14,6 +14,7 @@ dependencies:
   geolocator: ^13.0.1
   google_maps_flutter: ^2.9.0
   intl: ^0.19.0
+  native_shared_preferences: ^2.0.10
 
 
 dev_dependencies:

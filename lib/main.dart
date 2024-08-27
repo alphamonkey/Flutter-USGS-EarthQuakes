@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import './featurecollection.dart';
 import './colors.dart';
 import 'package:geolocator/geolocator.dart';
-
+import './settings.dart';
 void main() {
   runApp(const MainApp());
 }
@@ -56,7 +56,12 @@ class _MainAppState extends State<MainApp> {
 
   Future<FeatureCollection> fetchFeatures() async {
     final end = DateTime.now();
-    final start = end.subtract(Duration(hours: 24));
+ 
+
+    final maxRadius = await Settings.getInt('maxRadius') * 1.60934;
+    final daysAgo = await Settings.getInt('daysAgo');
+    final minMag = await Settings.getDouble('minMag');
+    final start = end.subtract(Duration(days: daysAgo));
     final endString = end.toIso8601String();
     final startString = start.toIso8601String();
     position = await determinePosition();
@@ -66,9 +71,9 @@ class _MainAppState extends State<MainApp> {
     if (latitude == null || longitude == null) {
       throw Exception('No location available');
     }
-
+  
     final response = await http.get(Uri.parse(
-        'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=$startString&endtime=$endString&latitude=$latitude&longitude=$longitude&maxradiuskm=80&minmagnitude=1.0&orderby=magnitude&eventtype=earthquake'));
+        'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=$startString&endtime=$endString&latitude=$latitude&longitude=$longitude&maxradiuskm=$maxRadius&minmagnitude=$minMag&orderby=magnitude&eventtype=earthquake'));
     if (response.statusCode == 200) {
       return FeatureCollection.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>);
