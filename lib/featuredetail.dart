@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import './featurecollection.dart';
 import './topbar.dart';
-
+import './colors.dart';
 class FeatureDetail extends StatelessWidget {
   FeatureDetail({super.key, required this.feature});
 
@@ -20,7 +20,7 @@ class FeatureDetail extends StatelessWidget {
 
     return (SafeArea(
         child: Container(
-      decoration: const BoxDecoration(color: CupertinoColors.black),
+      decoration: const BoxDecoration(color: ThemeColor.darkGray),
       child: Column(children: [
         TopBar(title: feature?.properties.place ?? "No Feature Loaded"),
         Expanded(
@@ -39,7 +39,7 @@ class FeatureDetail extends StatelessWidget {
             width: double.infinity,
             margin: const EdgeInsets.all(8.0),
             decoration: const BoxDecoration(
-              color: CupertinoColors.darkBackgroundGray,
+              color: ThemeColor.gray,
             ),
             child: const Text('Foo')),
       ]),

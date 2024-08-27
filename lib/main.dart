@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_usgs_earthquakes/featurelist.dart';
 import './bottombar.dart';
@@ -85,6 +84,7 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     return CupertinoApp(
       home: CupertinoPageScaffold(
+          backgroundColor: ThemeColor.darkGray,
           resizeToAvoidBottomInset: true,
           child: SafeArea(
               child: Column(

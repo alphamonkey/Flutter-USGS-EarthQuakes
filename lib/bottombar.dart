@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_usgs_earthquakes/featurecollection.dart';
+import './styles.dart';
 import './colors.dart';
 import 'package:intl/intl.dart';
+
 class BottomBar extends StatelessWidget {
   final Function()? onRefreshPressed;
   final FeatureMetaData? metaData;
@@ -18,14 +20,15 @@ class BottomBar extends StatelessWidget {
 
     if (metaData != null) {
       DateFormat formatter = DateFormat('MM/dd/yy hh:mm:ss');
-      _dateString = formatter.format(DateTime.fromMillisecondsSinceEpoch(metaData!.generated));
+      _dateString = formatter
+          .format(DateTime.fromMillisecondsSinceEpoch(metaData!.generated));
     }
-    
+
     int updateCount = metaData?.count ?? 0;
     return (Container(
         height: 64.0,
         decoration: BoxDecoration(
-            color: CupertinoColors.darkBackgroundGray,
+            color: ThemeColor.gray,
             borderRadius: BorderRadius.circular(24.0)),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -36,10 +39,9 @@ class BottomBar extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('$updateCount Earthquakes'),
-              if(metaData != null )  Text('Last Updated: $_dateString')
-              
-              
+              Text('$updateCount Earthquakes', style: ThemeStyle.countStyle,),
+              if (metaData != null) const SizedBox(height:4.0),
+              if (metaData != null) Text('Last Updated: $_dateString', style: ThemeStyle.subtitle,)
             ],
           ),
           CupertinoButton(
