@@ -22,6 +22,8 @@ class _MainAppState extends State<MainApp> {
   late Future<FeatureCollection> featureCollection;
 
   Position? position;
+  
+
 
   @override
   void initState() {
@@ -66,7 +68,7 @@ class _MainAppState extends State<MainApp> {
     }
 
     final response = await http.get(Uri.parse(
-        'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=$startString&endtime=$endString&latitude=$latitude&longitude=$longitude&maxradiuskm=80'));
+        'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=$startString&endtime=$endString&latitude=$latitude&longitude=$longitude&maxradiuskm=80&minmagnitude=1.0&orderby=magnitude&eventtype=earthquake'));
     if (response.statusCode == 200) {
       return FeatureCollection.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>);
@@ -99,7 +101,7 @@ class _MainAppState extends State<MainApp> {
                         if (snapshot.hasData &&
                             snapshot.connectionState !=
                                 ConnectionState.waiting) {
-                          return FeatureList(featureCollection: snapshot.data);
+                          return FeatureList(position:position, featureCollection: snapshot.data!);
                         } else if (snapshot.hasError) {
                           return Text('Error');
                         } else {

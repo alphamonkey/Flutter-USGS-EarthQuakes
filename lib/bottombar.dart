@@ -39,7 +39,7 @@ class BottomBar extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('$updateCount Earthquakes', style: ThemeStyle.countStyle,),
+              Text('${metaData?.count ?? 0} Earthquakes', style: ThemeStyle.countStyle,),
               if (metaData != null) const SizedBox(height:4.0),
               if (metaData != null) Text('Last Updated: $_dateString', style: ThemeStyle.subtitle,)
             ],

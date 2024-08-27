@@ -196,7 +196,9 @@ class FeatureMetaData {
     final String id;
     final FeatureProperties properties;
     final FeatureGeometry geometry;
-    
+    String get shortName => properties.place.split(' of ')[1];
+    double get latitude => geometry.coordinates[1].toDouble();
+    double get longitude => geometry.coordinates[0].toDouble();
     const Feature({
       required this.type,
       required this.id,
