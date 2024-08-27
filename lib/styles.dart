@@ -8,4 +8,5 @@ class ThemeStyle {
   static TextStyle midMagStyle = const TextStyle(color: ThemeColor.midMag);
   static TextStyle highMagStyle = const TextStyle(color: ThemeColor.highMag);
   static TextStyle title = const TextStyle(color: ThemeColor.white, fontWeight: FontWeight.bold);
+  static TextStyle nullStyle = const TextStyle(color: ThemeColor.lightGray, fontStyle: FontStyle.italic);
 }

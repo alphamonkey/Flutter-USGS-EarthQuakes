@@ -19,7 +19,7 @@ class BottomBar extends StatelessWidget {
     String _dateString = '';
 
     if (metaData != null) {
-      DateFormat formatter = DateFormat('MM/dd/yy hh:mm:ss');
+      DateFormat formatter = DateFormat('MM/dd/yy h:mm:ss a');
       _dateString = formatter
           .format(DateTime.fromMillisecondsSinceEpoch(metaData!.generated));
     }
