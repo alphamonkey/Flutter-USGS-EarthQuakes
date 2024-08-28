@@ -4,6 +4,7 @@ import './featurecollection.dart';
 import './topbar.dart';
 import './colors.dart';
 import './featurepropertyview.dart';
+
 class FeatureDetail extends StatelessWidget {
   FeatureDetail({super.key, required this.feature});
 
@@ -26,8 +27,9 @@ class FeatureDetail extends StatelessWidget {
         TopBar(title: feature?.properties.place ?? "No Feature Loaded"),
         Expanded(
             // Rounded corners don't work with Google Maps Flutter (yet)
-            child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0)),
-          margin: const EdgeInsets.symmetric(horizontal:12.0),
+            child: Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.0)),
+          margin: const EdgeInsets.symmetric(horizontal: 12.0),
           child: GoogleMap(
               initialCameraPosition: CameraPosition(
                   target: LatLng(
@@ -37,21 +39,32 @@ class FeatureDetail extends StatelessWidget {
               markers: markers),
         )),
         Container(
-            padding:EdgeInsets.all(8.0),
-            height: 108,
-            width: double.infinity,
-            margin: const  EdgeInsets.symmetric(horizontal:8.0, vertical:12.0),
-            decoration:  BoxDecoration(
-              color: ThemeColor.gray,
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-            child: Column(mainAxisSize:MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment:  CrossAxisAlignment.start, children: [
-                FeaturePropertyView(property: "Place", value: feature?.properties.place),
-                FeaturePropertyView(property: "Magnitude", value: '${feature?.properties.mag}'),
-                FeaturePropertyView(property: "Alert", value: feature?.properties.alert),
-                FeaturePropertyView(property: "Significance", value: '${feature?.properties.sig}'),
-            ],),
-        )]),
+          padding: const EdgeInsets.all(8.0),
+          height: 108,
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+          decoration: BoxDecoration(
+            color: ThemeColor.gray,
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              FeaturePropertyView(
+                  property: "Place", value: feature?.properties.place),
+              FeaturePropertyView(
+                  property: "Magnitude", value: '${feature?.properties.mag}'),
+              FeaturePropertyView(
+                  property: "Alert", value: feature?.properties.alert),
+              FeaturePropertyView(
+                  property: "Significance",
+                  value: '${feature?.properties.sig}'),
+            ],
+          ),
+        )
+      ]),
     )));
   }
 }

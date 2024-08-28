@@ -8,6 +8,7 @@ import './colors.dart';
 import 'package:geolocator/geolocator.dart';
 import './settings.dart';
 import './errorpage.dart';
+
 void main() {
   runApp(const MainApp());
 }
@@ -39,10 +40,10 @@ class _MainAppState extends State<MainApp> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnabled) {
-
       setState(() {
         _errorTitle = "Location Services";
-        _errorMessage = "Location services are disabled.  Enable them in settings to use the app";
+        _errorMessage =
+            "Location services are disabled.  Enable them in settings to use the app";
       });
 
       return Future.error('Location services are disabled');
@@ -54,16 +55,18 @@ class _MainAppState extends State<MainApp> {
       if (permission == LocationPermission.denied) {
         setState(() {
           _errorTitle = "Location Services";
-          _errorMessage = "Permission to use your location has been denied.  Please allow in settings to use the app";
+          _errorMessage =
+              "Permission to use your location has been denied.  Please allow in settings to use the app";
         });
         return Future.error('Location permission denied');
       }
     }
     if (permission == LocationPermission.deniedForever) {
-        setState(() {
-          _errorTitle = "Location Services";
-          _errorMessage = "Permission to use your location has been denied.  Please allow in settings to use the app";
-        });
+      setState(() {
+        _errorTitle = "Location Services";
+        _errorMessage =
+            "Permission to use your location has been denied.  Please allow in settings to use the app";
+      });
       return Future.error('Location permission permanantly denied');
     }
     return await Geolocator.getCurrentPosition();
@@ -79,45 +82,44 @@ class _MainAppState extends State<MainApp> {
     final endString = end.toIso8601String();
     final startString = start.toIso8601String();
     position = await determinePosition();
- 
-     
+
     final latitude = position?.latitude;
     final longitude = position?.longitude;
 
     if (latitude == null || longitude == null) {
-
-        setState(() {
-          _errorTitle = "Location Services";
-          _errorMessage = "Unable to retrieve your location.  Please allow this app to use location services in settings.";
-        });
+      setState(() {
+        _errorTitle = "Location Services";
+        _errorMessage =
+            "Unable to retrieve your location.  Please allow this app to use location services in settings.";
+      });
 
       throw Exception('No location available');
     }
 
-    final response = await http.get(Uri.parse(
-        'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=$startString&endtime=$endString&latitude=$latitude&longitude=$longitude&maxradiuskm=$maxRadius&minmagnitude=$minMag&orderby=magnitude&eventtype=earthquake')).catchError((err) {
-            setState(() {
-              _errorTitle = "Connection error";
-              _errorMessage = err.toString();
-             
-            });
-           throw Exception('Connection error');
-        });
+    final response = await http
+        .get(Uri.parse(
+            'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=$startString&endtime=$endString&latitude=$latitude&longitude=$longitude&maxradiuskm=$maxRadius&minmagnitude=$minMag&orderby=magnitude&eventtype=earthquake'))
+        .catchError((err) {
+      setState(() {
+        _errorTitle = "Connection error";
+        _errorMessage = err.toString();
+      });
+      throw Exception('Connection error');
+    });
     if (response.statusCode == 200) {
       return FeatureCollection.fromJson(
           jsonDecode(response.body) as Map<String, dynamic>);
     } else {
-              setState(() {
-          _errorTitle = "HTTP Error ${response.statusCode}";
-          _errorMessage = response.body;
-        });
+      setState(() {
+        _errorTitle = "HTTP Error ${response.statusCode}";
+        _errorMessage = response.body;
+      });
       throw Exception('Failed to get features');
     }
   }
 
   void onRefreshPressed() async {
     setState(() {});
-    print('Refresh pressed');
     featureCollection = fetchFeatures();
   }
 
@@ -144,9 +146,12 @@ class _MainAppState extends State<MainApp> {
                               position: position,
                               featureCollection: snapshot.data!);
                         } else if (snapshot.hasError) {
-                          return ErrorPage(errorTitle: _errorTitle, errorMessage: _errorMessage,);
+                          return ErrorPage(
+                            errorTitle: _errorTitle,
+                            errorMessage: _errorMessage,
+                          );
                         } else {
-                          return Center(
+                          return const Center(
                               child: CupertinoActivityIndicator(
                                   animating: true,
                                   color: ThemeColor.accentColor,

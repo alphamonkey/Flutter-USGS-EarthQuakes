@@ -15,35 +15,46 @@ class BottomBar extends StatelessWidget {
     this.onRefreshPressed,
   });
 
-
   @override
   Widget build(BuildContext context) {
-    String _dateString = '';
+    String dateString = '';
 
     if (metaData != null) {
       DateFormat formatter = DateFormat('MM/dd/yy h:mm:ss a');
-      _dateString = formatter
+      dateString = formatter
           .format(DateTime.fromMillisecondsSinceEpoch(metaData!.generated));
     }
 
-    int updateCount = metaData?.count ?? 0;
     return (Container(
         height: 64.0,
         decoration: BoxDecoration(
-            color: ThemeColor.gray,
-            borderRadius: BorderRadius.circular(24.0)),
+            color: ThemeColor.gray, borderRadius: BorderRadius.circular(24.0)),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-           CupertinoButton(
-              onPressed: () {Navigator.push(context, CupertinoModalPopupRoute(builder: (context) => SettingsView(onSettingsChange: onRefreshPressed,)));},
-              child: Icon(CupertinoIcons.gear,
+          CupertinoButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    CupertinoModalPopupRoute(
+                        builder: (context) => SettingsView(
+                              onSettingsChange: onRefreshPressed,
+                            )));
+              },
+              child: const Icon(CupertinoIcons.gear,
                   size: 36.0, color: ThemeColor.accentColor)),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('${metaData?.count ?? 0} Earthquakes', style: ThemeStyle.countStyle,),
-              if (metaData != null) const SizedBox(height:4.0),
-              if (metaData != null) Text('Last Updated: $_dateString', style: ThemeStyle.subtitle,)
+              Text(
+                '${metaData?.count ?? 0} Earthquakes',
+                style: ThemeStyle.countStyle,
+              ),
+              if (metaData != null) const SizedBox(height: 4.0),
+              if (metaData != null)
+                Text(
+                  'Last Updated: $dateString',
+                  style: ThemeStyle.subtitle,
+                )
             ],
           ),
           CupertinoButton(
