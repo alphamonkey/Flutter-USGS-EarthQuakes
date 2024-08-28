@@ -84,6 +84,7 @@ class _MainAppState extends State<MainApp> {
 
   void onRefreshPressed() async {
     setState(() {});
+    print('Refresh pressed');
     featureCollection = fetchFeatures();
   }
 

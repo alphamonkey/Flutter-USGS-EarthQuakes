@@ -3,6 +3,7 @@ import 'package:flutter_usgs_earthquakes/featurecollection.dart';
 import './styles.dart';
 import './colors.dart';
 import 'package:intl/intl.dart';
+import './settingsview.dart';
 
 class BottomBar extends StatelessWidget {
   final Function()? onRefreshPressed;
@@ -13,6 +14,7 @@ class BottomBar extends StatelessWidget {
     this.metaData,
     this.onRefreshPressed,
   });
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +34,8 @@ class BottomBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(24.0)),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          const CupertinoButton(
-              onPressed: null,
+           CupertinoButton(
+              onPressed: () {Navigator.push(context, CupertinoModalPopupRoute(builder: (context) => SettingsView(onSettingsChange: onRefreshPressed,)));},
               child: Icon(CupertinoIcons.gear,
                   size: 36.0, color: ThemeColor.accentColor)),
           Column(
